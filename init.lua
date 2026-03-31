@@ -154,17 +154,12 @@ vim.o.softtabstop = 2
 
 -- Forward clipboard
 if vim.env.SSH_TTY then
-  vim.g.clipboard = {
-    name = 'OSC 52',
-    copy = {
-      ['+'] = require('vim.ui.clipboard.osc52').copy '+',
-      ['*'] = require('vim.ui.clipboard.osc52').copy '*',
-    },
-    paste = {
-      ['+'] = require('vim.ui.clipboard.osc52').paste '+',
-      ['*'] = require('vim.ui.clipboard.osc52').paste '*',
-    },
-  }
+  vim.api.nvim_create_autocmd('TextYankPost', {
+    callback = function()
+      -- This uses the built-in OSC 52 function only for the 'copy' action
+      require('vim.ui.clipboard.osc52').copy '+'(vim.v.event.regcontents)
+    end,
+  })
 end
 
 -- Preview substitutions live, as you type!
