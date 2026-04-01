@@ -153,7 +153,7 @@ vim.o.tabstop = 2
 vim.o.softtabstop = 2
 
 -- Forward clipboard
-if vim.env.SSH_TTY then
+if vim.env.SSH_TTY or vim.env.SSH_CONNECTION then
   vim.api.nvim_create_autocmd('TextYankPost', {
     callback = function()
       -- This uses the built-in OSC 52 function only for the 'copy' action
